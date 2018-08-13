@@ -6,7 +6,7 @@
   "scripts": {
     "start": "gulp",
     "build": "gulp build",
-    "push": "git add . && git commit -m \"[Atualização Automática]\" && git push -u origin master"
+    "push": "git add . && git commit -m \"[Atualização Automática]\" && git push -u --force origin master"
   },
   "keywords": [
     "jekyll",
