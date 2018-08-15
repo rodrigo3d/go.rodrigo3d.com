@@ -30,11 +30,11 @@ var AppCustom = function () {
 
 
   /* -------------------------------------------------------------------------------- */
-  function __InitBarProgress() {
+  function __InitBarProgress(query) {
     var percentage = document.getElementById("percentage");
     var elem = document.getElementById("progress_bar");
     var width = 1;
-    var id = setInterval(frame, 40);
+    var id = setInterval(frame, 16);
 
     function frame() {
       if (width === 100) {
@@ -44,7 +44,8 @@ var AppCustom = function () {
         percentage.innerHTML = width + '%';
         elem.style.width = width + '%';
         if (width === 100) {
-          console.log(query);
+          window.location.href = query;
+          // console.log(query);
         }
       }
     }
@@ -66,7 +67,7 @@ var AppCustom = function () {
       var query = decodeURIComponent(__getQueryVariable("redirect") || "").replace(/\+/g, "%20");
       if (query != "") {
         $('.starter-template .lead').html("Aguarde estamos redirecionando para <span>" + query + "</span>");
-        __InitBarProgress();
+        __InitBarProgress(query);
       }
       console.log('PaceJS - hide');
     });
