@@ -71,7 +71,7 @@ gulp.task('html', function () {
       author_name: pkg.author.name,
       author_email: pkg.author.email
     }))
-    // .pipe(htmlmin({ collapseWhitespace: true, removeComments: true }))
+    .pipe(htmlmin({ collapseWhitespace: true, removeComments: true }))
     .pipe(gulp.dest('./_site'))
     .pipe(browserSync.stream())
     .pipe(plumber.stop());
