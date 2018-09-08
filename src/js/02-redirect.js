@@ -25,8 +25,8 @@
         percentage.innerHTML = width + '%';
         elem.style.width = width + '%';
         if (width === 100) {
-          // window.location.href = query;
-          console.log(query);
+          window.location.href = query;
+          // console.log(query);
         }
       }
     }
