@@ -191,6 +191,12 @@ gulp.task('vendor', function () {
   ])
     .pipe(gulp.dest('./_site/assets/vendor/jquery'))
 
+  // Copy Custom Files
+  gulp.src([
+    './_redirects'
+  ])
+    .pipe(gulp.dest('./_site'))
+
 });
 
 /*
