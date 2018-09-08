@@ -1,0 +1,39 @@
+// Styling for the home
+
+/*! normalize.css v4.1.1 | MIT License | github.com/necolas/normalize.css */
+.github-corner:hover .octo-arm {
+	animation: octocat-wave .56s ease-in-out;
+}
+.github-corner svg {
+	z-index: 9999;
+  // fill: gray;
+  fill: fade-out($myColor, .0);
+	color: #fff;
+}
+.github-corner:hover svg {
+	z-index: 9999;
+  // fill: #337ab7;
+  fill: fade-out($myColor, .7);
+}
+@keyframes octocat-wave {
+	0%,
+	to {
+		transform: rotate(0deg);
+	}
+	20%,
+	60% {
+		transform: rotate(-25deg);
+	}
+	40%,
+	80% {
+		transform: rotate(10deg);
+	}
+}
+@media (max-width: 500px) {
+	.github-corner:hover .octo-arm {
+		animation: none;
+	}
+	.github-corner .octo-arm {
+		animation: octocat-wave .56s ease-in-out;
+	}
+}

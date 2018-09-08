@@ -15,7 +15,7 @@
     var percentage = document.getElementById("percentage");
     var elem = document.getElementById("progress_bar");
     var width = 1;
-    var id = setInterval(frame, 16);
+    var id = setInterval(frame, 14);
 
     function frame() {
       if (width === 100) {

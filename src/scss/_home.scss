@@ -34,7 +34,7 @@ main.container {
 		&:active {
 			// color: $white;
 			// background-color: darken($myColor, 100%);
-			background-color: fade-out($myColor, 0.7);
+			background-color: fade-out($myColor, .7);
 			// border-color: fade-out($red, .0);
 		}
   }

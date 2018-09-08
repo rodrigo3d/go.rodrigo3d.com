@@ -16,10 +16,10 @@
     "css",
     "js"
   ],
-  "homepage": "https://github.com/rodrigo3d/go#readme",
+  "homepage": "https://go.rodrigo3d.com",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/rodrigo3d/go.git"
+    "url": "https://github.com/rodrigo3d/go"
   },
   "bugs": {
     "url": "https://github.com/rodrigo3d/go/issues"
