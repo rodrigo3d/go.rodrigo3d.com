@@ -1,62 +1,140 @@
-# [RODRIGO3D.COM](https://rodrigo3d.com)
+# GO
 
-[Bare](http://startbootstrap.com/template-overviews/bare/) é um modelo HTML inicial para o [Bootstrap](http://getbootstrap.com/) criado por [Start Bootstrap](http://startbootstrap.com/). Esse modelo apresenta caminhos de arquivo predefinidos para Bootstrap e jQuery, para que você possa criar rapidamente sites do Bootstrap.
+![Screenshot](https://go.rodrigo3d.com/screenshot.png)
 
-#
+Este é um modelo simples e minimalista para Jekyll projetado para desenvolvedores que querem escrever posts, mas não querem se preocupar com coisas frontend.
 
-[![Bare Preview](screenshot.png)](https://rodrigo3d.github.io/)
+Os recursos do tema:
 
-**[Visualização ao vivo](https://rodrigo3d.com)**
+- Gulp
+- Stylus (Jeet, Rupture, Kouto Swiss)
+- Smoothscroll
+- Pesquisa em tempo real
+- Menu Offcanvas 
+- Ícones SVG
+- Muito pequeno e rápido!
+- Shell Script para criar postagens
+- Página de tags
+- Series page
+- Sobre mim página
+- Feed RSS
+- Sitemap.xml
+- Personalização de cores
+- Personalização de Informações
 
-## Status
+## Configuração básica
 
-[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/rodrigo3d/rodrigo3d.com/master/LICENSE.md)
-[![npm version](https://img.shields.io/badge/npm-v5.6.0-blue.svg)](https://www.npmjs.com/~rodrigo3d)
-[![Build Status](https://img.shields.io/badge/build-passing-green.svg)]()
-[![dependencies Status](https://img.shields.io/badge/dependencies-up%20to%20date-green.svg)]()
-[![devDependencies Status](https://img.shields.io/badge/devDependencies-up%20to%20date-green.svg)]()
+1. [Install Jekyll](http://jekyllrb.com)
+2. Bifurque-se o [Will Jekyll Template](https://github.com/willianjusten/will-jekyll-template/fork)
+3. Clone o repo que você acabou de bifurcar.
+4. Edite `_config.yml` para personalizar seu site.
+5. Confira as mensagens de amostra `_posts` para ver exemplos de atribuição de categorias e tags e outros dados YAML.
+6. Leia a documentação abaixo para obter mais ponteiros e documentação de personalização.
+7. **Lembre-se de compilar seus arquivos de ativos com o Gulp.**
 
-## Download and Installation
+## Configurações do site e do usuário
 
-To begin using this template, choose one of the following options to get started:
-* [Download the latest release on Start Bootstrap](https://startbootstrap.com/template-overviews/bare/)
-* Install via npm: `npm i startbootstrap-bare`
-* Clone the repo: `git clone https://github.com/BlackrockDigital/startbootstrap-bare.git`
-* [Fork, Clone, or Download on GitHub](https://github.com/BlackrockDigital/startbootstrap-bare)
+Você tem que preencher algumas informações `_config.yml` ara personalizar seu site.
 
-## Usage
+{% highlight bash %}
+# Site settings
+description: A blog about lorem ipsum dolor sit amet
+baseurl: "" # the subpath of your site, e.g. /blog/
+url: "http://localhost:3000" # the base hostname & protocol for your site 
 
-### Basic Usage
+# User settings
+username: Lorem Ipsum
+user_description: Anon Developer at Lorem Ipsum Dolor
+user_title: Anon Developer
+email: anon@anon.com
+twitter_username: lorem_ipsum
+github_username:  lorem_ipsum
+gplus_username:  lorem_ipsum
+disqus_username: lorem_ipsum
+{% endhighlight %}
+**Não esqueça de mudar sua base antes de construir seu site!**
 
-After downloading, simply edit the HTML and CSS files included with the template in your favorite text editor to make changes. These are the only files you need to worry about, you can ignore everything else! To preview the changes you make to the code, you can open the `index.html` file in your web browser.
+## Color customization
+###Personalização de cores
 
-### Advanced Usage
+Todas as variáveis ​​de cores estão em `src/styl/variable`.Para alterar a cor principal, basta definir o novo valor na `main` atribuição. Outras cores são para textos e a cor de fundo do código.
 
-After installation, run `npm install` and then run `gulp dev` which will open up a preview of the template in your default browser, watch for changes to core template files, and live reload the browser when changes are saved. You can view the `gulpfile.js` to see which tasks are included with the dev environment.
+## Creating posts
 
-## Bugs and Issues
+Você pode usar o `initpost.sh` para criar suas novas postagens. Apenas siga o comando:
 
-Have a bug or an issue with this template? [Open a new issue](https://github.com/BlackrockDigital/startbootstrap-bare/issues) here on GitHub or leave a comment on the [template overview page at Start Bootstrap](http://startbootstrap.com/template-overviews/bare/).
+{% highlight bash %}
+./initpost.sh -c Post Title
+{% endhighlight %}
 
-## Custom Builds
+O novo arquivo será criado `_posts` com este formato `date-title.md`.
 
-You can hire Start Bootstrap to create a custom build of any template, or create something from scratch using Bootstrap. For more information, visit the **[custom design services page](https://startbootstrap.com/bootstrap-design-services/)**.
+## Front-matter 
 
-## Sobre
+Quando você cria uma nova postagem, precisa preencher as informações da postagem na primeira linha, siga este exemplo:
 
-Start Bootstrap is an open source library of free Bootstrap templates and themes. All of the free templates and themes on Start Bootstrap are released under the MIT license, which means you can use them for any purpose, even for commercial projects.
+{% highlight yml %}
+---
+layout: post
+title: "How to use"
+date: 2015-08-03 03:32:44
+image: '/assets/img/post-image.png'
+description: 'First steps to use this template'
+tags:
+ - jekyll 
+ - template 
+categories:
+ - I love Jekyll
+twitter_text: 'How to install and use this template'
+---
+{% endhighlight %}
 
-* https://startbootstrap.com
-* https://twitter.com/SBootstrap
+## Executando o blog no local
+Para compilar os ativos e executar o Jekyll no local, você precisa seguir estas etapas:
 
-Start Bootstrap was created by and is maintained by **[David Miller](http://davidmiller.io/)**, Owner of [Blackrock Digital](http://blackrockdigital.io/).
+- Instalar o [NodeJS](https://nodejs.org/)
+- Run `npm install` 
+- Run `gulp`
 
-* http://davidmiller.io
-* https://twitter.com/davidmillerskt
-* https://github.com/davidtmiller
+## Questões
 
-Start Bootstrap is based on the [Bootstrap](http://getbootstrap.com/) framework created by [Mark Otto](https://twitter.com/mdo) and [Jacob Thorton](https://twitter.com/fat).
+Está tendo algum problema para fazer algo funcionar ou quer saber porque eu configurei algo de uma determinada maneira? Faça um ping me no Twitter [@willian_justen](https://twitter.com/willian_justen) ou envie um [GitHub Issue](https://github.com/willianjusten/will-jekyll-template/issues/new).
 
-## Direitos Autorais e Licença
+## Doação
 
-Copyright 2013-2018 RODRIGO3D.COM. Código liberado sob o [MIT](https://github.com/rodrigo3d/rodrigo3d.com/blob/master/LICENSE.md) license.
+Se você gostou do meu trabalho, me compre um café <3
+
+[![paypal](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=UTMFZUHX6EUGE)
+
+## Licença
+
+Este tema é um software livre e de código aberto, distribuído sob a licença The MIT. Então sinta-se livre para usar este tema Jekyll em seu site sem ligar de volta para mim ou usando um aviso legal.
+
+Se você gostaria de me dar crédito em algum lugar do seu blog ou tweetar um [@willian_justen](https://twitter.com/willian_justen),  seria bem legal.
+
+
+
+
+
+
+
+
+You'll find this post in your `_posts` directory - edit this post and re-build (or run with the `-w` switch) to see your changes!
+To add new posts, simply add a file in the `_posts` directory that follows the convention: YYYY-MM-DD-name-of-post.ext.
+
+![Screenshot](https://go.rodrigo3d.com/screenshot.png)
+
+Jekyll also offers powerful support for code snippets:
+
+{% highlight ruby %}
+def print_hi(name)
+  puts "Hi, #{name}"
+end
+print_hi('Tom')
+#=> prints 'Hi, Tom' to STDOUT.
+{% endhighlight %}
+
+Check out the [Jekyll docs][jekyll] for more info on how to get the most out of Jekyll. File all bugs/feature requests at [Jekyll's GitHub repo][jekyll-gh].
+
+[jekyll-gh]: https://github.com/mojombo/jekyll
+[jekyll]:    http://jekyllrb.com

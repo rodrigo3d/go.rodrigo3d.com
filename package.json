@@ -1,15 +1,16 @@
 {
-  "name": "GO!",
+  "name": "go",
   "version": "1.0.0",
-  "description": "Página de redirecionamento.",
+  "description": "Página de Redirecionamento.",
   "main": "gulpfile.js",
+  "color": "#22df80",
   "scripts": {
     "start": "gulp",
+    "dev": "gulp dev",
     "build": "gulp build",
-    "push": "git add . && git commit -m \"[Atualização Automática]\" && git push -u --force origin master"
+    "push": "git add . && git commit -m \"[Atualização Automática]\" && git push -u origin dev"
   },
   "keywords": [
-    "jekyll",
     "gulp",
     "html",
     "css",
@@ -31,20 +32,21 @@
   },
   "dependencies": {
     "bootstrap": "^4.1.3",
-    "jquery": "^3.3.1",
-    "pace-js": "^1.0.2"
+    "jquery": "^3.3.1"
   },
   "devDependencies": {
-    "browser-sync": "^2.24.4",
+    "browser-sync": "^2.24.7",
     "del": "^3.0.0",
     "gulp": "^3.9.1",
-    "gulp-clean-css": "^3.9.4",
     "gulp-concat": "^2.6.1",
     "gulp-header": "^2.0.5",
+    "gulp-htmlmin": "^4.0.0",
     "gulp-imagemin": "^4.1.0",
     "gulp-plumber": "^1.2.0",
-    "gulp-rename": "^1.3.0",
-    "gulp-uglify": "^3.0.0",
+    "gulp-rename": "^1.4.0",
+    "gulp-sass": "^4.0.1",
+    "gulp-template": "^5.0.0",
+    "gulp-uglify": "^3.0.1",
     "run-sequence": "^2.2.1"
   }
 }

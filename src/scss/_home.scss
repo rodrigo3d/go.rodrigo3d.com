@@ -1,0 +1,42 @@
+// Styling for the home
+
+main.container {
+	padding: 75.2px 24px;
+	text-align: center;
+}
+
+main.container {
+
+  h1 {
+		color: fade-out($myColor, .2);
+		font-size: 60px;
+		font-weight: 400;
+  }
+
+  .lead span {
+		// @extend h1;
+		color: fade-out($myColor, .3);
+	}
+
+	.progress {
+		height: 25px;
+	}
+
+	#progress_bar {
+		background-color: fade-out($myColor, .2);
+  }
+
+  .btn-outline-light {
+    color: fade-out($myColor, .3);
+		border: 1px solid fade-out($myColor, .3);
+		&:hover,
+		&:focus,
+		&:active {
+			// color: $white;
+			// background-color: darken($myColor, 100%);
+			background-color: fade-out($myColor, 0.7);
+			// border-color: fade-out($red, .0);
+		}
+  }
+
+}

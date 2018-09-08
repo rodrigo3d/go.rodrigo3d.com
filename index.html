@@ -1,19 +1,75 @@
----
-layout: default
----
+<!DOCTYPE html>
+<html lang="en">
 
-<main role="main" class="container">
-  <div class="starter-template">
-    <h1>GO!</h1>
-    <p class="lead mt-4">
-      https://go.rodrigo3d.com/?redirect=<span>https://rodrigo3d.com</span>
-    </p>
-    <small id="percentage">&nbsp;</small>
-    <div class="progress mb-4">
-      <div id="progress_bar"></div>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="<%= description %>">
+  <meta name="author" content="<%= author_name %> - <%= author_email %>">
+
+  <title><%= title %> | <%= description %></title>
+
+  <!-- Favicon -->
+  <link rel="apple-touch-icon" sizes="180x180" href="assets/img/icons/apple-touch-icon.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/img/icons/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="assets/img/icons/favicon-16x16.png" />
+  <link rel="manifest" href="assets/img/icons/site.webmanifest" />
+  <link rel="mask-icon" href="assets/img/icons/safari-pinned-tab.svg" color="#5bbad5" />
+  <link rel="shortcut icon" href="assets/img/icons/favicon.ico" />
+  <meta name="apple-mobile-web-app-title" content="rodrigo3d">
+  <meta name="application-name" content="rodrigo3d">
+  <meta name="msapplication-TileColor" content="<%= color %>">
+  <meta name="msapplication-config" content="assets/img/icons/browserconfig.xml" />
+  <meta name="theme-color" content="<%= color %>">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,300,500,600,700" rel="stylesheet" type="text/css" />
+
+  <!-- Bootstrap core CSS -->
+  <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+
+  <!-- Custom styles for this template -->
+  <link href="assets/css/main.min.css" rel="stylesheet" />
+</head>
+
+<body>
+  <!-- Page Content -->
+  <main class="container">
+
+    <!-- Intro Content -->
+    <div class="row">
+      <div class="col-lg-12">
+        <h1><%= title %></h1>
+        <p class="lead mt-4">
+          https://go.rodrigo3d.com/?redirect=<span>https://rodrigo3d.com</span>
+        </p>
+        <small id="percentage">&nbsp;</small>
+        <div class="progress mb-4">
+          <div id="progress_bar"></div>
+        </div>
+      </div>
     </div>
-    <a href="{{"/" | relative_url }}?redirect=https://google.com" class="btn btn-outline-success">GOOGLE.COM</a>
-    <a href="{{"/" | relative_url }}" class="btn btn-outline-success">GO!</a>
-    <a href="{{"/" | relative_url }}?redirect=https://rodrigo3d.com" class="btn btn-outline-success">RODRIGO3D.COM</a>
-  </div>
-</main>
+    <!-- /.row -->
+
+    <!-- Intro Content -->
+    <div class="row">
+      <div class="col-lg-12">
+        <a class="btn btn-outline-light btn-sm" href="/?redirect=https://google.com" role="button">GOOGLE.COM</a>
+        <a class="btn btn-outline-light btn-sm" href="/" role="button"><%= title %></a>
+        <a class="btn btn-outline-light btn-sm" href="/?redirect=https://rodrigo3d.com" role="button">RODRIGO3D.COM</a>
+      </div>
+    </div>
+    <!-- /.row -->
+  </main>
+  <!-- /.container -->
+
+  <!-- Bootstrap core JavaScript -->
+  <script src="assets/vendor/jquery/jquery.min.js"></script>
+  <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Custom JavaScript for this template -->
+  <script src="assets/js/main.min.js"></script>
+
+</body>
+
+</html>

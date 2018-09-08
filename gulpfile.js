@@ -2,99 +2,160 @@
 
 var cp = require('child_process');
 
-var browserSync = require('browser-sync');
+/*
+ * dev Dependências
+ */
+var browserSync = require('browser-sync').create();
 var del = require('del');
 var gulp = require('gulp');
-var cleanCSS = require('gulp-clean-css');
 var concat = require('gulp-concat');
 var header = require('gulp-header');
+var htmlmin = require('gulp-htmlmin');
 var imagemin = require('gulp-imagemin');
 var plumber = require('gulp-plumber');
 var rename = require('gulp-rename');
-var uglify = require('gulp-uglify');
+var sass = require('gulp-sass');
+var template = require('gulp-template');
 var runSequence = require('run-sequence');
 
 var pkg = require('./package.json');
 
-// Set the banner content
-var banner = ['/*!\n',
+var banner = [
+  '/*!\n',
   ' * RODRIGO3D.COM - <%= pkg.name %> v<%= pkg.version %> (<%= pkg.homepage %>)\n',
-  ' * Copyright ' + (new Date()).getFullYear(), ' <%= pkg.author.name %> - <%= pkg.author.email %>\n',
+  ' * Copyright ' + new Date().getFullYear(),
+  ' <%= pkg.author.name %> - <%= pkg.author.email %>\n',
   ' * Licenciado sob <%= pkg.license %> (https://github.com/rodrigo3d/<%= pkg.name %>/blob/master/LICENSE)\n',
   ' */\n',
   ''
 ].join('');
 
 var messages = {
-  jekyllBuild: '<span style="color: red">Running:</span> $ jekyll build'
+  js: '<span style="color: red">Running:</span> $ Compilando arquivos JavaScript',
+  sass: '<span style="color: red">Running:</span> $ Compilando arquivos SCSS',
+  html: '<span style="color: red">Running:</span> $ Compilando arquivos HTML'
 };
 
-var jekyllCommand = (/^win/.test(process.platform)) ? 'windows' : 'linux';
-
-// Build the Jekyll Site
-if (jekyllCommand === 'windows') {
-  gulp.task('jekyll-build', function (done) {
-    browserSync.notify(messages.jekyllBuild);
-    return cp.spawn('jekyll.bat', ['build'], { stdio: 'inherit' })
-      .on('close', done);
-  });
-}
-if (jekyllCommand === 'linux') {
-  gulp.task('jekyll-build', function (done) {
-    browserSync.notify(messages.jekyllBuild);
-    return cp.spawn('bundle', ['exec', 'jekyll build'], { stdio: 'inherit' })
-      .on('close', done);
-  });
-}
-
-// Rebuild Jekyll & do page reload
-gulp.task('jekyll-rebuild', ['jekyll-build'], function () {
+/*
+ * Tarefa do Gulp, recompila e recarrega as páginas
+ */
+gulp.task('browser-sync-reload', function () {
+  browserSync.notify(messages.html)
   browserSync.reload();
 });
 
-// Wait for jekyll-build, then launch the Server
-gulp.task('browser-sync', ['jekyll-build'], function () {
+/*
+ * Tarefa do Gulp, configura o browserSync
+ */
+gulp.task('browser-sync', function () {
   browserSync.init({
-    server: { baseDir: "./_site", directory: false, index: "index.html" }
+    port: 3000,
+    ui: { port: 3001 },
+    server: { baseDir: './_site', directory: false, index: 'index.html' }
   });
 });
 
-// Gulp task to minify css files
-gulp.task('css:theme', function () {
-  return gulp.src(['./src/css/**/*.css'])
+/*
+ * Tarefa do Gulp para minimizar arquivos SASS e concatenar em um único arquivo
+ * src: ./src/scss/clean-blog.scss
+ * dest: ./website/assets/css/clean-blog.min.css
+ */
+gulp.task('html', function () {
+  browserSync.notify(messages.html)
+  return gulp.src(['./index.html'])
     .pipe(plumber())
-    // .pipe(concat('custom.css'))
-    .pipe(cleanCSS())
-    .pipe(rename({ suffix: '.min' }))
-    .pipe(header(banner, { pkg: pkg }))
-    .pipe(gulp.dest('./_site/assets/css/'))
+    .pipe(template({
+      title: pkg.name.toUpperCase(),
+      description: pkg.description,
+      color: pkg.color,
+      author_name: pkg.author.name,
+      author_email: pkg.author.email
+    }))
+    // .pipe(htmlmin({ collapseWhitespace: true, removeComments: true }))
+    .pipe(gulp.dest('./_site'))
     .pipe(browserSync.stream())
-    .pipe(gulp.dest('./assets/css/'))
     .pipe(plumber.stop());
 });
 
-// Gulp task to minify JavaScript files
-gulp.task('js:theme', function () {
-  return gulp.src(['./src/js/**/*.js', '!./src/js/*.min.js', '!./src/js/analytics.js'])
+/*
+ * Tarefa do Gulp para minimizar arquivos SASS e concatenar em um único arquivo
+ * src: ./src/scss/clean-blog.scss
+ * dest: ./website/assets/css/clean-blog.min.css
+ */
+gulp.task('sass:configure', function () {
+  browserSync.notify(messages.sass)
+  return gulp.src(['./src/scss/_variables-custom.scss'])
     .pipe(plumber())
-    // .pipe(concat('custom.js'))
-    .pipe(uglify())
-    .pipe(rename({ suffix: '.min' }))
-    .pipe(header(banner, { pkg: pkg }))
-    .pipe(gulp.dest('./_site/assets/js/'))
+    .pipe(template({
+      color: pkg.color
+    }))
+    .pipe(rename({ suffix: '.new' }))
+    .pipe(gulp.dest('./src/scss'))
     .pipe(browserSync.stream())
-    .pipe(gulp.dest('./assets/js/'))
     .pipe(plumber.stop());
 });
 
-// Gulp task to minify image files
-gulp.task('img', function () {
+gulp.task('sass', ['sass:configure'], function () {
+  browserSync.notify(messages.sass)
+  return gulp.src(['./src/scss/main.scss'])
+    .pipe(plumber())
+    .pipe(sass.sync({ outputStyle: 'expanded' }).on('error', sass.logError))
+    //   .pipe(cleanCSS())
+    .pipe(rename({ suffix: '.min' }))
+    .pipe(header(banner, { pkg: pkg }))
+    .pipe(gulp.dest('./_site/assets/css'))
+    // .pipe(gulp.dest('./assets/css'))
+    .pipe(browserSync.stream())
+    .pipe(plumber.stop());
+});
+
+/*
+ * Tarefa do Gulp para minimizar arquivos .js e concatena-los em um único arquivo.
+ * src: ./src/js
+ * dest: ./source/assets/js
+ */
+gulp.task('js', function () {
+  browserSync.notify(messages.js)
+  return gulp.src(['./src/js/**/0*.js', '!./src/js/**/*.min.*'])
+    .pipe(plumber())
+    .pipe(concat('main.js'))
+    // .pipe(uglify())
+    .pipe(rename({ suffix: '.min' }))
+    .pipe(header(banner, { pkg: pkg }))
+    .pipe(gulp.dest('./_site/assets/js'))
+    // .pipe(gulp.dest('./source/assets/js'))
+    .pipe(browserSync.stream())
+    .pipe(plumber.stop());
+});
+
+/*
+ * Tarefa do Gulp para minimizar arquivos de Imagem
+ * src: ./src/img
+ * dest: ./source/assets/img
+ */
+gulp.task('imagemin:screenshot', function () {
+  return gulp.src(['./screenshot.png'])
+    .pipe(plumber())
+    // .pipe(gulp.dest('./source/assets/img'))
+    .pipe(gulp.dest('./_site'))
+    .pipe(browserSync.stream())
+    .pipe(plumber.stop());
+});
+gulp.task('imagemin:cp', function () {
+  return gulp.src(['./src/img/**/*.{xml,webmanifest}'])
+    .pipe(plumber())
+    // .pipe(gulp.dest('./source/assets/img'))
+    .pipe(gulp.dest('./_site/assets/img'))
+    .pipe(browserSync.stream())
+    .pipe(plumber.stop());
+});
+gulp.task('imagemin', ['imagemin:screenshot', 'imagemin:cp'], function () {
   return gulp.src(['./src/img/**/*.{gif,jpg,jpeg,png,svg,ico}', '!./src/img/**/*.fw.png'])
     .pipe(plumber())
-    .pipe(imagemin({ optimizationLevel: 5, progressive: true, interlaced: true }))
-    .pipe(gulp.dest('./_site/assets/img/'))
+    .pipe(imagemin({ interlaced: true, progressive: true, optimizationLevel: 5, svgoPlugins: [{ removeViewBox: false }] }))
+    // .pipe(gulp.dest('./source/assets/img'))
+    .pipe(gulp.dest('./_site/assets/img'))
     .pipe(browserSync.stream())
-    .pipe(gulp.dest('./assets/img/'))
     .pipe(plumber.stop());
 });
 
@@ -108,7 +169,7 @@ gulp.task('vendor', function () {
     '!./node_modules/bootstrap/dist/css/bootstrap-reboot*',
     '!./node_modules/bootstrap/dist/**/*.map'
   ])
-    .pipe(gulp.dest('./assets/vendor/bootstrap/'))
+    .pipe(gulp.dest('./_site/assets/vendor/bootstrap'))
 
   // Font Awesome
   gulp.src([
@@ -120,7 +181,7 @@ gulp.task('vendor', function () {
     '!./node_modules/font-awesome/*.{txt,json,md}',
     '!./node_modules/font-awesome/**/*.map'
   ])
-    .pipe(gulp.dest('./assets/vendor/font-awesome/'))
+    .pipe(gulp.dest('./_site/assets/vendor/font-awesome'))
 
   // jQuery
   gulp.src([
@@ -128,62 +189,45 @@ gulp.task('vendor', function () {
     '!./node_modules/jquery/dist/core.js',
     '!./node_modules/jquery/dist/*.map'
   ])
-    .pipe(gulp.dest('./assets/vendor/jquery/'))
-
-  // Popper.js
-  gulp.src([
-    './node_modules/popper.js/dist/*.min.*',
-    '!./node_modules/popper.js/.*',
-    '!./node_modules/popper.js/*.{txt,json,md}',
-    '!./node_modules/popper.js/**/*.map'
-  ])
-    .pipe(gulp.dest('./assets/vendor/popper.js/'))
-
-  // Pace js
-  gulp.src([
-    './node_modules/pace-js/*.min.*',
-    './node_modules/pace-js/**/themes/green/*minimal*'
-  ])
-    .pipe(gulp.dest('./assets/vendor/pace-js/'))
+    .pipe(gulp.dest('./_site/assets/vendor/jquery'))
 
 });
 
-// Clean output directory
+/*
+ * Tarefa do Gulp para limpar o diretório de saída
+ * dir: ./site, ./assets, ./source/assets
+ */
 gulp.task('clean', function () {
   return del([
-    './_site',
-    './assets'
+    './_site', './src/scss/_variables-custom.new.scss'
   ]);
 });
 
-// Watch all files for changes & recompile
-
-//Watch all files, run jekyll & reload BrowserSync
+/**
+ * Watch stylus files for changes & recompile
+ * Watch html/md files, run jekyll & reload BrowserSync
+ */
 gulp.task('watch', function () {
-  gulp.watch('./src/css/**/*.css', ['css:theme']);
-  gulp.watch('./src/js/**/*.js', ['js:theme']);
-  gulp.watch(['**/*.yml', '**/*.html'], ['jekyll-rebuild']);
+  gulp.watch('./src/scss/**/*.scss', ['sass']);
+  gulp.watch('./src/js/**/*.js', ['js']);
+  gulp.watch('src/img/**/*.{gif,jpg,jpeg,png,svg,ico}', ['imagemin']);
+  gulp.watch(['./*.html'], ['html']);
 });
 
-// Gulp task to minify all files
+/**
+ * Default task, running just `gulp` will compile the sass,
+ * compile the jekyll site, launch BrowserSync & watch files.
+ */
 gulp.task('default', ['clean'], function () {
-  runSequence(
-    'css:theme',
-    'js:theme',
-    'img',
-    'vendor',
-    'browser-sync',
-    'watch'
-  );
+  runSequence('html', 'sass', 'js', 'imagemin', 'vendor', 'browser-sync', 'watch');
 });
 
 // Gulp task to build all files
 gulp.task('build', ['clean'], function () {
-  runSequence(
-    'css:theme',
-    'js:theme',
-    'img',
-    'vendor',
-    'jekyll-build'
-  );
+  runSequence('html', 'sass', 'js', 'imagemin', 'vendor');
+});
+
+// Gulp task to build all files
+gulp.task('dev', function () {
+  runSequence('html', 'sass', 'js', 'browser-sync', 'watch');
 });
